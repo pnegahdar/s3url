@@ -15,7 +15,8 @@ It freaking sucked.
 I still find that most people configure s3 like this as well and you end up needing quite a few envars to configure a
 bucket. `STORAGE_MAIN_S3_ENDPOINT`, `STORAGE_MAIN_S3_ACCESS_KEY_ID`, `STORAGE_MAIN_S3_SECRET_KEY`, `STORAGE_MAIN_S3_BUCKET`, `STORAGE_MAIN_S3_PREFIX`,
 
-It still sucks.
+
+It still sucks. With `S3_URL` you just need a single envar:
 
 ```
 S3_URL="s3://access_key:secret_key@endpoint/bucket/prefix"
