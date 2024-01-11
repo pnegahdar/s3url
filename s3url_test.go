@@ -53,6 +53,19 @@ func TestParseS3Urn(t *testing.T) {
 			},
 		},
 		{
+			name: "Prefix trailing slash preserved",
+			urn:  "s3://[ac=@\\c:e/ss]:[k=?e&y@123]@endpoint/bucket/prefix/",
+			expect: S3Config{
+				AccessKeyId:  "ac=@\\c:e/ss",
+				SecretKey:    "k=?e&y@123",
+				Bucket:       "bucket",
+				Prefix:       "prefix/",
+				Endpoint:     "https://endpoint",
+				EndpointHost: "endpoint",
+				Params:       make(url.Values),
+			},
+		},
+		{
 			name: "Valid URN with no prefix",
 			urn:  "s3://accessKey123:secretKey123@endpoint/bucket",
 			expect: S3Config{
@@ -73,6 +86,19 @@ func TestParseS3Urn(t *testing.T) {
 				SecretKey:    "secretKey123",
 				Bucket:       "bucket",
 				Prefix:       "prefix/subprefix",
+				Endpoint:     "https://endpoint",
+				EndpointHost: "endpoint",
+				Params:       make(url.Values),
+			},
+		},
+		{
+			name: "Valid URN with multiple prefixes and trialing slash",
+			urn:  "s3://accessKey123:secretKey123@endpoint/bucket/prefix/subprefix/",
+			expect: S3Config{
+				AccessKeyId:  "accessKey123",
+				SecretKey:    "secretKey123",
+				Bucket:       "bucket",
+				Prefix:       "prefix/subprefix/",
 				Endpoint:     "https://endpoint",
 				EndpointHost: "endpoint",
 				Params:       make(url.Values),

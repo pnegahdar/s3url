@@ -90,6 +90,10 @@ func Parse(value string) (S3Config, error) {
 	bucketPrefix := ""
 	if len(pathParts) > 1 {
 		bucketPrefix = pathParts[1]
+		// add back prefix trailing slash if it was there
+		if parsedUrl.Path[len(parsedUrl.Path)-1] == '/' {
+			bucketPrefix += "/"
+		}
 	}
 
 	// Populate the S3Config struct with the extracted and decoded values
