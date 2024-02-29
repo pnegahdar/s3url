@@ -96,6 +96,16 @@ func Parse(value string) (S3Config, error) {
 		}
 	}
 
+	values := parsedUrl.Query()
+
+	// check that prefix ends in a slash
+	if bucketPrefix != "" && bucketPrefix[len(bucketPrefix)-1] != '/' {
+		if values.Get("anyPrefix") == "" {
+			return s3Config, errors.New("prefix must end with a slash, set anyPrefix=1 on the url to allow it.")
+		}
+	}
+
+	values.Del("anyPrefix")
 	// Populate the S3Config struct with the extracted and decoded values
 	s3Config = S3Config{
 		AccessKeyId:  accessKeyID,
@@ -104,7 +114,7 @@ func Parse(value string) (S3Config, error) {
 		Prefix:       bucketPrefix,
 		Endpoint:     "https://" + parsedUrl.Host,
 		EndpointHost: parsedUrl.Host,
-		Params:       parsedUrl.Query(),
+		Params:       values,
 	}
 
 	// Validate the configuration
